@@ -225,23 +225,7 @@ Show storage usage on docker
 ```
 docker system df
 ```
-## Docker Dashboard
-You can install management dashboard docker via web ui with Portainer
 
-Create Portainer volume
-```
-docker volume create portainer_data
-```
-
-Running Container Portainer
-```
-docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-```
-
-Access management dashboard
-```
-https://ip-address:9443
-```
 ## Docker Compose
 Create compose file
 ```
@@ -287,4 +271,21 @@ services:
 Running container on compose file
 ```
 docker compose up -d
+```
+## Docker Dashboard
+You can install management dashboard docker via web ui with Portainer
+
+Create Portainer volume
+```
+docker volume create portainer_data
+```
+
+Running Container Portainer
+```
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+```
+
+Access management dashboard
+```
+https://ip-address:9443
 ```
