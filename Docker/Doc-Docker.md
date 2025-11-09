@@ -216,16 +216,6 @@ Show resource usage on docker
 docker stats
 ```
 
-Show history image build
-```
-docker image history image-name
-```
-
-Show storage usage on docker
-```
-docker system df
-```
-
 ## Docker Compose
 Create compose file
 ```
