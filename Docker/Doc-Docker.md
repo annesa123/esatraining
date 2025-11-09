@@ -257,12 +257,6 @@ services:
 		image: "nginx"
 ```
 
-
-Build compose file
-```
-docker compose build
-```
-
 Running container on compose file
 ```
 docker compose up -d
@@ -288,10 +282,6 @@ services:
     ports:
       - "1013:80"
 		image: "httpd"
-```
-Build compose file
-```
-docker compose build
 ```
 
 Running container on compose file
