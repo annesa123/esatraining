@@ -23,10 +23,10 @@ spec:
 kubectl apply -f pod-myapp.yaml
 kubectl apply -f node-web-app.yaml
 kubectl get pods -o wide
-,,,
+```
 
 # NodeSelector
-,,,
+```
 #cara nambah label
 kubectl label node worker1 disk=hdd
 kubectl label node worker2 disk=ssd
@@ -57,4 +57,4 @@ EOF
 kubectl apply -f pod-myapp-ssd.yaml
 kubectl get nodes -l disk=ssd
 kubectl get pods -o wide
-,,,
+```
