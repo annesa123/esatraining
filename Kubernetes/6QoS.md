@@ -1,4 +1,4 @@
-#resource management
+# resource management
 ```
 cat <<EOF> resouce.yaml
 apiVersion: v1
