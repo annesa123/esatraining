@@ -197,6 +197,53 @@ kubectl set image deployment kubeapp kubeapp=kubenesia/kubeapp:1.2.0 --record
 kubectl rollout undo deployment kubeapp
 kubectl rollout undo deployment kubeapp --to-revision=<REVISION NUMBER>
 ```
+# DaemonSet (replikasinya memastikan 1 node ada 1 pod)
+```
+kubectl create ns monitoring
 
+cat <<EOF> fluentd-elasticsearch.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd-elasticsearch
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      name: fluentd-elasticsearch
+  template:
+    metadata:
+      labels:
+        name: fluentd-elasticsearch
+    spec:
+      containers:
+      - name: fluentd-elasticsearch
+        image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+          readOnly: true
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+EOF
+
+kubectl apply -f fluentd-elasticsearch.yaml
+
+kubectl get daemonset -n monitoring 
+kubectl get pods -o wide -n monitoring | grep fluentd
+kubectl get nodes
+```
 
 
