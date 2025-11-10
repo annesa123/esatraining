@@ -58,7 +58,7 @@ kubectl apply -f pod-myapp-ssd.yaml
 kubectl get nodes -l disk=ssd
 kubectl get pods -o wide
 ```
-#Static Pod
+# Static Pod
 ```
 ssh <IP-WORKER>
 
@@ -74,7 +74,7 @@ spec:
 EOF
 ```
 
-#ReplicaSets
+# ReplicaSets
 ```
 cat <<EOF> kubeapp-rs.yaml
 apiVersion: apps/v1
@@ -132,3 +132,71 @@ EOF
 
 kubectl apply -f kubeapp-rs-with-nodeSelector.yaml
 ```
+# Deployment
+```
+cat <<EOF> kubeapp.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: kubeapp
+      service: a
+  template:
+    metadata:
+      labels:
+        app: kubeapp
+        service: a
+    spec:
+      containers:
+      - name: kubeapp
+        image: kubenesia/kubeapp:1.0.0  
+EOF
+
+kubectl apply -f kubeapp.yaml
+kubectl get deployment
+kubectl get replicaset
+kubectl get pods
+kubectl get pods --show-labels
+```
+# scale deployment
+```
+kubectl scale deployment <name deployment> --replicas=<jumlah replika>
+```
+# Deployment rolling update (update versi ke 1.1.0)
+```
+kubectl rollout history deployment kubeapp -n <namespace>
+kubectl annotate deployment <NAMA DEPLOYMENT> kubernetes.io/change-cause="<CHANGE CAUSE>"
+kubectl set image deployment <NAMA DEPLOYMENT> <NAMA CONTAINER>=<IMAGE BARU> --record
+kubectl set image deployment kubeapp kubeapp=kubenesia/kubeapp:1.1.0 --record
+```
+
+# Deployment check rollout history
+```
+kubectl rollout status deployment kubeapp
+kubectl rollout history deployment kubeapp -n <namespace>
+kubectl annotate deployment <NAMA DEPLOYMENT> kubernetes.io/change-cause="<CHANGE CAUSE>"
+kubectl rollout history deployment kubeapp
+
+#Setiap melakukan update / rolling update image, Deployment akan membuatkan replicaset baru
+kubectl get rs
+
+```
+# Update ke versi dan rollback
+```
+kubectl set image deployment kubeapp kubeapp=kubenesia/kubeapp:1.2.0 --record
+
+1.0.0 → 1.2.0 → 1.1.0
+
+# Deployment Rollback 
+
+#akan melakukan rollback ke satu versi di sebelumnya
+kubectl rollout undo deployment kubeapp
+kubectl rollout undo deployment kubeapp --to-revision=<REVISION NUMBER>
+```
+
+
+
