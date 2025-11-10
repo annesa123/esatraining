@@ -22,3 +22,20 @@ ansible -i inventory.ini kube_nodes -m ping
 ansible-playbook -i inventory.ini kubeadm_playbook.yml
 
 ```
+## Initiate Mster/Control Plan
+```
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo kubeadm init
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl get pods -n kube-system
+kubectl get nodes
+
+# Regenerate join token
+kubeadm token create --print-join-command
+```
+
+
