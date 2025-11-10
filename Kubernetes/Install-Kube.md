@@ -1,5 +1,5 @@
 # Kubernetes Installation
-## Lakukan install sshpass
+## Lakukan install sshpass all node
 ```
 sudo apt-get update
 sudo apt-get install sshpass -y
