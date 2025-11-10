@@ -1,5 +1,5 @@
 #resource management
-
+```
 cat <<EOF> resouce.yaml
 apiVersion: v1
 kind: Pod
@@ -17,3 +17,6 @@ spec:
         memory: "128Mi"
         cpu: "250m"
 EOF
+kubectl apply -f resource.yml
+kubectl get pod
+```
