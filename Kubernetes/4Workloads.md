@@ -222,7 +222,6 @@ spec:
         volumeMounts:
         - name: varlog
           mountPath: /var/log
-          readOnly: true
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
@@ -238,6 +237,7 @@ spec:
         hostPath:
           path: /var/lib/docker/containers
 EOF
+
 
 kubectl apply -f fluentd-elasticsearch.yaml
 
