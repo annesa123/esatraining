@@ -226,10 +226,10 @@ spec:
 EOF
 
 
-kubectl apply -f fluentd-elasticsearch.yaml
+kubectl apply -f nginx.yaml
 
 kubectl get daemonset -n monitoring 
-kubectl get pods -o wide -n monitoring | grep fluentd
+kubectl get pods -o wide -n monitoring | grep nginx
 kubectl get nodes
 ```
 
