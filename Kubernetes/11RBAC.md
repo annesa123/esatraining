@@ -1,6 +1,7 @@
-#RBAC
+# RBAC
 
-# create user certificate
+## create user certificate
+```
 openssl genrsa -out nugraha.key 2048
 openssl req -new -key nugraha.key -out nugraha.csr -subj "/CN=nugraha/O=development"
 
@@ -27,8 +28,9 @@ kubectl get nodes
 sudo cat ~/.kube/config
 
 # create Role (membuat role/permission dg resource yg akan diizinkan beserta verbs/operasi yg bisa dilakukan)
-
-#kembali menggunakan user admin
+```
+## kembali menggunakan user admin
+```
 kubectl config use-context kubernetes-admin@kubernetes
 
 cat <<EOF> role-developer.yaml
@@ -49,4 +51,41 @@ kubectl describe role -n dev developer
 
 #cara cek api group
 kubectl api-resources
+```
+## create RoleBinding (menghubungkan role dengan user)
+```
+cat <<EOF> rolebinding-developer.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-nugraha-rolebinding
+  namespace: dev
+subjects:
+- kind: User
+  name: nugraha
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+EOF
+
+kubectl apply -f rolebinding-developer.yaml
+kubectl get rolebinding -n dev developer-nugraha-rolebinding
+kubectl describe rolebinding -n dev developer-nugraha-rolebinding
+```
+
+
+## test RBAC
+```
+kubectl config get-contexts
+kubectl config use-context nugraha-ctx
+kubectl get nodes
+	→ expected error
+
+kubectl get pods
+kubectl get deploy
+kubectl get secret
+	→ expected error
+```
+
 
