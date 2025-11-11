@@ -1,5 +1,6 @@
 # Ingress
 ## Ingress controller installation
+```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/baremetal/deploy.yaml
 
 kubectl get all -n ingress-nginx
@@ -56,18 +57,46 @@ kubectl get ingress
 
 kubectl get svc -n ingress-nginx
 
-curl <NODE_PUBLIC_IP>:<NodePort ingress service>
-
-curl -H "Host: kubeapp.com" http://<NODE_PUBLIC_IP>:<NODE-PORT SVC INGRESS NGINX>/home
-curl -H "Host: kubeapp.com" http://<NODE_PUBLIC_IP>:<NODE-PORT SVC INGRESS NGINX>/account
-
-vim /etc/hosts
-<PUBLIC_IP> kubeapp.com
-
-
 
 
 notepad <C:\Windows\System32\drivers\etc>
 # di browser
 kubeapp.com:<NODEPORT SVC INGRESS NGINX>/
 kubeapp.com:<NODEPORT SVC INGRESS NGINX>/account
+```
+
+## Network Policy
+```
+kubectl get pods -n kube-system
+
+cat <<EOF> netpol-deny-from-other-ns.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: default
+  name: deny-from-other-namespaces
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
+EOF
+
+kubectl apply -f netpol-deny-from-other-ns.yaml
+
+kubectl get networkpolicy
+
+
+**# test koneksi dari luar namespace default**
+kubectl run test -it -n dev --rm --image=kubenesia/kubebox -- sh
+wget -qO- --timeout=5 kubeapp.default
+wget: download timed out
+
+**# test koneksi dari dalam namespace default**
+kubectl run test -it -n default --rm --image=kubenesia/kubebox -- sh	
+wget -qO- --timeout=2 kubeapp
+	Hello World!
+
+kubectl delete netpol deny-from-other-namespaces
+```
+
