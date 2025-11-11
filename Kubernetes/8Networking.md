@@ -105,7 +105,7 @@ kubectl edit configmap -n kube-system kube-proxy
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
 
-cat <<EOF> firstpool.yaml
+cat <<EOF> first-pool.yaml
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -113,11 +113,10 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 10.23.3.45-10.23.3.49
+  - 192.168.100.20-192.168.100.50
 EOF
-
-kubectl apply -f firstpool.yaml
-kubectl get ipaddresspool
+kubectl apply -f first-pool.yaml
+kubectl get IPAddressPool -n metallb-system
 
 cat <<EOF> L2.yaml
 apiVersion: metallb.io/v1beta1
@@ -129,9 +128,9 @@ spec:
   ipAddressPools:
   - first-pool
 EOF
-
 kubectl apply -f L2.yaml
-kubectl get L2Advertisement
+kubectl get L2Advertisement -n metallb-system
+
 ```
 
 
