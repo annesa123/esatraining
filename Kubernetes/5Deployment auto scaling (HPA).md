@@ -6,8 +6,6 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 kubectl get pods -n kube-system
 kubectl edit deployment -n kube-system metrics-server
 
-#sejajar dg containers, tambahkan baris berikut
-hostNetwork: true
 
 #dibagian argument tambahkan
 - --kubelet-insecure-tls
