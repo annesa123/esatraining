@@ -132,5 +132,31 @@ kubectl apply -f L2.yaml
 kubectl get L2Advertisement -n metallb-system
 
 ```
+# DNS
+```
+kubectl get pods -n kube-system
+kubectl run test -it --rm --image=kubenesia/kubebox -- sh
+cat /etc/resolv.conf
+nslookup kubeapp
+curl kubeapp
+```
+# DNS lookup across namespace
+```
+kubectl create ns dev
+
+kubectl run test -n dev -it --rm --image=kubenesia/kubebox -- sh
+cat /etc/resolv.conf
+curl kubeapp
+curl kubeapp.default
+
+kubectl get pod -A
+kubectl get ns
+
+kubectl exec test -n dev -- curl kubeapp
+kubectl exec test -n dev -- curl kubeapp.default
+
+kubectl get svc -n kube-system
+kubectl get pods -n kube-system
+```
 
 
