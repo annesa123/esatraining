@@ -201,41 +201,28 @@ kubectl rollout undo deployment kubeapp --to-revision=<REVISION NUMBER>
 ```
 kubectl create ns monitoring
 
-cat <<EOF> fluentd-elasticsearch.yaml
+cat <<EOF> nginx.yaml
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd-elasticsearch
+  name: nginx
   namespace: monitoring
 spec:
   selector:
     matchLabels:
-      name: fluentd-elasticsearch
+      name: nginx
   template:
     metadata:
       labels:
-        name: fluentd-elasticsearch
+        name: nginx
     spec:
       containers:
-      - name: fluentd-elasticsearch
-        image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
-        volumeMounts:
-        - name: varlog
-          mountPath: /var/log
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
+      - name: nginx
+        image: nginx
       tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
-      volumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers
 EOF
 
 
