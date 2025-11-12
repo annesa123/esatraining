@@ -46,10 +46,10 @@ spec:
 EOF
 
 kubectl apply -f service-externalname.yaml
-kubectl describe svc idn
+kubectl describe svc dk
 kubectl run test -it --rm --image=kubenesia/kubebox -- sh
-curl -k https://idn
-nslookup idn
+curl -k https://dk
+nslookup dk
 exit
 ```
 # NodePort
