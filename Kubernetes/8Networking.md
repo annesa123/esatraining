@@ -39,10 +39,10 @@ cat <<EOF> service-externalname.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: idn
+  name: dk
 spec:
   type: ExternalName
-  externalName: www.idn.id
+  externalName: www.detik.com
 EOF
 
 kubectl apply -f service-externalname.yaml
