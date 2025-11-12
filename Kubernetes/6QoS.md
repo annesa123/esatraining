@@ -1,6 +1,6 @@
 # resource management
 ```
-cat <<EOF> resouce.yaml
+cat <<EOF> resource.yaml
 apiVersion: v1
 kind: Pod
 metadata:
