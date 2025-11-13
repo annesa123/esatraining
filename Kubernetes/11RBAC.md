@@ -102,7 +102,7 @@ roleRef:
   name: cluster-admin
 EOF
 
-clusterrolebinding-admin.yaml
+kubectl apply -f clusterrolebinding-admin.yaml
 ```
 
 
