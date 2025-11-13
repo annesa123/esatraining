@@ -93,7 +93,7 @@ cat <<EOF> clusterrolebinding-admin.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: read-secrets-global
+  name: cr-esa-admin
 subjects:
 - kind: User
   name: esa
