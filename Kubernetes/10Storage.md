@@ -17,7 +17,7 @@ spec:
    - ReadWriteMany
   nfs:
     # change this
-    server: 10.184.0.55
+    server: 10.0.0.53
     path: /mnt/nfs_share
 EOF
 
@@ -92,7 +92,7 @@ sudo apt-get install helm
 
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 
-helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=10.184.0.55 --set nfs.path=/mnt/nfs_share --set storageClass.create=false --set storageClass.provisionerName=kubenesia.com/nfs
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --set nfs.server=10.0.0.53 --set nfs.path=/mnt/nfs_share --set storageClass.create=false --set storageClass.provisionerName=esa/nfs
 
 
 # verifikasi nfs provisioner, pastikan running
@@ -103,24 +103,24 @@ kubectl logs -l app=nfs-subdir-external-provisioner
 
 ## membuat StorageClass untuk dynamic provisioning
 ```
-cat <<EOF> sc-kubenesia.yaml
+cat <<EOF> sc-esa.yaml
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   labels:
     app: nfs-subdir-external-provisioner
-  name: nfs-kubenesia
+  name: nfs-esa
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
 parameters:
   archiveOnDelete: "true"
-provisioner: kubenesia.com/nfs
+provisioner: esa/nfs
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 EOF
 
-kubectl apply -f sc-kubenesia.yaml
+kubectl apply -f sc-esa.yaml
 kubectl get sc
 
 
@@ -130,7 +130,7 @@ apiVersion: v1
 metadata:
   name: nfs-dynamic
 spec:
-  storageClassName: nfs-kubenesia
+  storageClassName: nfs-esa
   accessModes:
     - ReadWriteMany
   resources:
