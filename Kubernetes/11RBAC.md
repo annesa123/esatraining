@@ -87,5 +87,22 @@ kubectl get deploy
 kubectl get secret
 	→ expected error
 ```
+## user permission Full Admin
+```
+cat <<EOF> clusterrolebinding-admin.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: read-secrets-global
+subjects:
+- kind: User
+  name: esa
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+EOF
+
+clusterrolebinding-admin.yaml
+```
 
 
